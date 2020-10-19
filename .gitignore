@@ -1,3 +1,4 @@
 build/
 dist/
 pysmeter.egg-info/
+pysmeter/__pycache__
