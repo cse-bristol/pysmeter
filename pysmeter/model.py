@@ -6,11 +6,13 @@ from pysmeter.common import MODEL_VERSION, MODELS_PATH
 
 def _load_ensemble_member(member_name: str, model_version: str, model_weeks: int):
     """Loads CNN from saved serialized architecture and weights."""
-    with open(os.path.join(MODELS_PATH, model_version, model_weeks, f"{member_name}.json")) as f:
+    wk = f"{model_weeks}wk"
+
+    with open(os.path.join(MODELS_PATH, model_version, wk, f"{member_name}.json")) as f:
         json_str = f.read()
         model = k.models.model_from_json(json_str, custom_objects={"GlorotUniform": k.initializers.glorot_uniform})
 
-    model.load_weights(os.path.join(MODELS_PATH, model_version, model_weeks, f"{member_name}.h5"))
+    model.load_weights(os.path.join(MODELS_PATH, model_version, wk, f"{member_name}.h5"))
 
     return model
 
@@ -50,7 +52,9 @@ def predict(X: np.ndarray):
         raise ValueError(f"Not enough time steps supplied. Expected at least {4 * 7 * 48} got {no_timesteps}.")
 
     # Load each of the ensemble members and make predictions. Append predictions to ensemble_predictions.
-    for f in os.scandir(MODELS_PATH):
+    ensemble_path = os.path.join(MODELS_PATH, MODEL_VERSION, f"{no_weeks}wk")
+
+    for f in os.scandir(ensemble_path):
         if "json" in f.name:
             member_name = f.name[:-5]
             model = _load_ensemble_member(member_name, MODEL_VERSION, no_weeks)
