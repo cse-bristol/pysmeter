@@ -126,7 +126,12 @@ All of the test houses were semi-detached with gas central heating, located in t
 It should be noted that the SMETER model is only designed to work with houses heated by a gas central heating system, since these make up the majority of the UK housing stock.
 
 
-
 ## Sensor placement guidance
 
-TODO
+When placing the temperature sensors in the dwelling, it is important to adhere to the following guidance. Failure to do so will affect the accuracy of the HTC prediction.
+
+- Temperature sensors should be placed in as many rooms of the house as is feasible. The stairwell/landing can be considered to be a single room as it is one continuous thermal zone.
+- The ideal sensor position is the exact centre of the room, although this is likely to be impossible in most cases. The next best place is halfway up a wall, or placed on a bookcase, say.
+- Sensors should not be placed near windows, sources of heat or in places where they will receive direct sunlight. They should also not be placed in places where they are likely to be moved, knocked off a perch or mistaken for a toy by children.
+- It is recommended that you number each of the sensors, either with a sticker or with permanent marker, and make a map of the house showing all the sensor locations.
+- The outside sensor can be placed anywhere close to the house, e.g. the front or back garden. It _must_ be placed within a Stevenson screen to shield it from direct sunlight.
