@@ -11,11 +11,14 @@ def download_model():
     three_wk_dir = os.path.join(MODELS_PATH, MODEL_VERSION, "3wk")
     four_wk_dir = os.path.join(MODELS_PATH, MODEL_VERSION, "4wk")
 
-    if not os.path.isdir(three_wk_dir):
-        os.makedirs(three_wk_dir)
+    try:
+        if not os.path.isdir(three_wk_dir):
+            os.makedirs(three_wk_dir)
 
-    if not os.path.isdir(four_wk_dir):
-        os.makedirs(four_wk_dir)
+        if not os.path.isdir(four_wk_dir):
+            os.makedirs(four_wk_dir)
+    except PermissionError as e:
+        raise PermissionError("Try running this command with sudo.") from e
 
     for week in ("3wk", "4wk"):
         # Make the model dir if necessary
