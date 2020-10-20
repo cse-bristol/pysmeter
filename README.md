@@ -46,18 +46,23 @@ source bin/activate
 pip install pysmeter
 ```
 
-The install does not include the model files themselves, as they are very large (~150MB). These need to be downloaded separately after installation:
+The install does not include the model files themselves, as they are very large (~300MB). These need to be downloaded separately after installation:
 ```
 python3 -m pysmeter.download_model
 ```
 
+This downloads the model files to `/usr/share/smeter-models` (Linux) or `/usr/local/share/smeter-models` (Mac).
+You may need to run this command as root.
+
 ## Usage
 
-It is generally expected that you will use pysmeter within an existing Python project. The package exposes a single function, `pysmeter.model.predict`, which makes and HTC prediction based on the input array. The input array can be either two-dimensional (if there is only one building) or three-dimensional (more than one building). The dimensions are:
+It is generally expected that you will use pysmeter within an existing Python project. The package exposes a single function, `pysmeter.model.predict`, which makes an HTC prediction based on the input array. The input array can be either two-dimensional (if there is only one building) or three-dimensional (more than one building). The dimensions are:
 
  - [_number of houses_ x] _timesteps_ x _channels_
 
 There are always four channels: indoor temp, outdoor temp, gas, elec.
+
+The number of timesteps should be at least 1008 (i.e. 3 weeks worth of half hours). The current model does not work with variable length input, but there are two versions of the model, one which has been trained on 3 weeks of data and one which has been trained on 4 weeks of data. If the supplied input array contains between 3 and 4 weeks of data then it will be truncated down to the first three weeks. If the supplied input array contains more than 4 weeks of data then it will be truncated down to the first four weeks.
 
 The predict function returns a list of predictions for each of the datasets it is given, where each prediction is a tuple containing the prediction itself, the lower bound and the upper bound.
 
