@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+
+import csv
+import argparse
+import pysmeter.model as smeter
+import numpy as np
+
+
+description = """Command line interface for the pysmeter package.
+
+Produces an estimate of the HTC of a domestic building given the path to a csv file containing time series data.
+
+The csv file must have four columns with readings for each of the four channels:
+ - average indoor temperature,
+ - outdoor temperature,
+ - gas kWh,
+ - elec kWh.
+
+It will be assumed that each row corresponds to a single datetime and that time entries are 30 min apart.
+If a datetime column is present, it will do no harm, but it will be ignored by the program.
+
+The expected column names are: indoor, outdoor, gas, elec.
+
+They can be in any order. If your csv has different column names you can declare them using the -i, -o, -g, -e options
+(see example below).
+
+Examples
+--------
+
+Simple usage:
+
+    pysmeter /path/to/csv/file.csv
+
+With optional csv column headers:
+
+    pysmeter /path/to/csv/file.csv -i 'Indoor temperature' -o 'Outdoor temperature'
+    pysmeter /path/to/csv/file.csv -g 'Gas'
+    pysmeter /path/to/csv/file.csv -e 'Electricity Usage (kWh)'
+
+"""
+
+
+def _read_data(file_path, indoor_col=None, outdoor_col=None, gas_col=None, elec_col=None):
+    """Reads data from file and returns 4 lists containing the data for each channel.
+    You can optionally provide column names for each of the four channels.
+    If not it will assume they are: indoor, outdoor, gas, elec.
+    """
+    indoor_col = indoor_col or "indoor"
+    outdoor_col = outdoor_col or "outdoor"
+    gas_col = gas_col or "gas"
+    elec_col = elec_col or "elec"
+
+    indoor, outdoor, gas, elec = [], [], [], []
+
+    with open(file_path) as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            indoor.append(float(row[indoor_col]))
+            outdoor.append(float(row[outdoor_col]))
+            gas.append(float(row[gas_col]))
+            elec.append(float(row[elec_col]))
+
+    return indoor, outdoor, gas, elec
+
+
+parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawTextHelpFormatter)
+parser.add_argument("file", metavar="F", type=str, help="Path to csv file.")
+parser.add_argument("-i", "--indoor-temp-col", help="Optional. Name of indoor temperature column in csv file.")
+parser.add_argument("-o", "--outdoor-temp-col", help="Optional. Name of outdoor temperature column in csv file.")
+parser.add_argument("-g", "--gas-kwh-col", help="Optional. Name of gas kWh column in csv file.")
+parser.add_argument("-e", "--elec-kwh-col", help="Optional. Name of electricity kWh column in csv file.")
+
+args = parser.parse_args()
+args = vars(args)
+
+print("Reading in data...")
+
+# Read in the data from the file
+channels = _read_data(
+    args["file"],
+    indoor_col = args["indoor_temp_col"],
+    outdoor_col = args["outdoor_temp_col"],
+    gas_col = args["gas_kwh_col"],
+    elec_col = args["elec_kwh_col"],
+)
+
+X = np.array([channels]).transpose((0, 2, 1))
+
+# Run the model
+print("Running SMETER model...")
+predictions = smeter.predict(X)
+htc, lower, upper = predictions[0]
+
+print("++++++++++++")
+print(f"Predicted HTC: {htc}")
+print(f"Prediction lower bound: {lower}")
+print(f"Prediction upper bound: {upper}")

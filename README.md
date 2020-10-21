@@ -56,6 +56,8 @@ You may need to run this command as root.
 
 ## Usage
 
+### Python module
+
 It is generally expected that you will use pysmeter within an existing Python project. The package exposes a single function, `pysmeter.model.predict`, which makes an HTC prediction based on the input array. The input array can be either two-dimensional (if there is only one building) or three-dimensional (more than one building). The dimensions are:
 
  - [_number of houses_ x] _timesteps_ x _channels_
@@ -110,6 +112,30 @@ predictions = smeter.predict(X)
 for htc, lower, upper in predictions:
     print(f"HTC: {htc} | Lower bound: {lower} | Upper bound: {upper}")
 ```
+
+### CLI
+
+There is also a command line interface to the progamme which lets you run the SMETER model on data from a csv file.
+
+The csv file must have four columns with readings for each of the four channels (average indoor temperature, outdoor temperature, gas kWh, elec kWh).
+
+It will be assumed that each row corresponds to a single datetime and that time entries are 30 min apart.
+If a datetime column is present, it will do no harm, but it will be ignored by the program.
+
+The expected column names are: `indoor, outdoor, gas, elec`.
+
+They can be in any order. If your csv has different column names you can declare them using the -i, -o, -g, -e options
+(see example below).
+
+Simple usage:
+
+    pysmeter /path/to/csv/file.csv
+
+With optional csv column headers:
+
+    pysmeter /path/to/csv/file.csv -i 'Indoor temperature' -o 'Outdoor temperature'
+    pysmeter /path/to/csv/file.csv -g 'Gas'
+    pysmeter /path/to/csv/file.csv -e 'Electricity Usage (kWh)'
 
 ## Limitations
 

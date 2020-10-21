@@ -13,6 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/cse-bristol/pysmeter",
     packages=setuptools.find_packages(),
+    scripts=["bin/pysmeter"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

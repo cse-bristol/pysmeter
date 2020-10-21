@@ -1,7 +1,15 @@
 import os
 import numpy as np
+# Before we import tensorflow, set the logging level so as to avoid unwanted messages
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import tensorflow as tf
 import tensorflow.keras as k
 from pysmeter.common import MODEL_VERSION, MODELS_PATH
+
+
+# It's also necessary to do the following now that tensorflow has been imported
+# to avoid excessive messages
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
 def _load_ensemble_member(member_name: str, model_version: str, model_weeks: int):
@@ -26,7 +34,7 @@ def predict(X: np.ndarray):
 
     There are always four channels:
         indoor temperature (deg C)
-        outdoor tempereature (deg C)
+        outdoor temperature (deg C)
         gas consumed (kWh)
         electricity consumed (kWh)
 
@@ -49,7 +57,7 @@ def predict(X: np.ndarray):
     elif no_weeks == 4:
         X = X[:,:(4 * 7 * 48),:]
     else:
-        raise ValueError(f"Not enough time steps supplied. Expected at least {4 * 7 * 48} got {no_timesteps}.")
+        raise ValueError(f"Not enough time steps supplied. Expected at least {3 * 7 * 48} got {no_timesteps}.")
 
     # Load each of the ensemble members and make predictions. Append predictions to ensemble_predictions.
     ensemble_path = os.path.join(MODELS_PATH, MODEL_VERSION, f"{no_weeks}wk")
