@@ -25,14 +25,12 @@ From these data the model produces an estimate of the HTC of the building, as wo
 
 ## Installation
 
-System requirements...
-
 Install with pip:
 ```
 pip install pysmeter
 ```
 
-It is recommended that you use a virtual env. Python >= 3.3 ships with venv in the standard library, so you can do:
+It is recommended that you use a virtual env. Python >= 3.6 ships with venv in the standard library, so you can do:
 ```
 python3 -m venv /path/to/new/virtual/environment
 ```
@@ -167,3 +165,5 @@ When placing the temperature sensors in the dwelling, it is important to adhere 
 - Sensors should not be placed near windows, sources of heat or in places where they will receive direct sunlight. They should also not be placed in places where they are likely to be moved, knocked off a perch or mistaken for a toy by children.
 - It is recommended that you number each of the sensors, either with a sticker or with permanent marker, and make a map of the house showing all the sensor locations.
 - The outside sensor can be placed anywhere close to the house, e.g. the front or back garden. It _must_ be placed within a Stevenson screen to shield it from direct sunlight.
+
+For more detailed guidance, see [https://smeter.cse.org.uk/guidance](https://smeter.cse.org.uk/guidance). We have also provided a template for noting sensor placement in MS Word format at [https://smeter.cse.org.uk/guidance/SMETER-sensor-placement-template.docx](https://smeter.cse.org.uk/guidance/SMETER-sensor-placement-template.docx).
