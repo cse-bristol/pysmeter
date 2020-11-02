@@ -16,7 +16,7 @@ setuptools.setup(
     scripts=["bin/pysmeter"],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: Apache License 2.0",
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
