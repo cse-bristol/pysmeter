@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="pysmeter",
-    version="0.2.0",
+    version="0.3.0",
     author="Mark Gibbons",
     author_email="mark.gibbons@cse.org.uk",
     description="A package for predicting the HTC of a building using smart meter data.",
